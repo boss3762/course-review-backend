@@ -4,6 +4,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { CreateCourseDto } from "./dto/create-course.dto";
 import { Review } from "./review.entity";
+import { CreateReviewDto } from "./dto/create-review.dto";
 
 @Injectable()
 export class CoursesService {
@@ -23,6 +24,10 @@ export class CoursesService {
     }
 
     async findAllReviews(courseId: string): Promise<Review[]> {
-        return this.reviewsRepository.find({where:{courseId:courseId}});
+        return this.reviewsRepository.find({ where: { courseId: courseId } });
+    }
+
+    async createReview(createReviewDto: CreateReviewDto) {
+        return this.reviewsRepository.save(createReviewDto);
     }
 }

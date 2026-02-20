@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Course } from './courses/courses.entity';
+import { Review } from './courses/review.entity';
 import { CoursesModule } from './courses/courses.module';
 
 @Module({
@@ -11,7 +12,7 @@ import { CoursesModule } from './courses/courses.module';
       type: 'mongodb',
       host: 'localhost',
       database: 'test',
-      entities: [Course],
+      entities: [Course, Review],
       synchronize: true,
     }),
 

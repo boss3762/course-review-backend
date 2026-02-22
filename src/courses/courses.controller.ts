@@ -4,6 +4,8 @@ import { CoursesService } from './courses.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { Review } from './review.entity';
 import { CreateReviewDto } from './dto/create-review.dto';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 
 @Controller('courses')
@@ -15,14 +17,10 @@ export class CoursesController {
     return this.coursesService.findAll()
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createCourseDto: CreateCourseDto) {
-    if ((createCourseDto.number !== undefined) && (createCourseDto.title !== undefined)) {
-      const newCourse = this.coursesService.create(createCourseDto);
-      return newCourse;
-    } else {
-      throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST);
-    }
+    return this.coursesService.create(createCourseDto);
   }
 
   @Get(':courseId/reviews')
@@ -30,6 +28,7 @@ export class CoursesController {
     return this.coursesService.findAllReviews(courseId);
   }
 
+  
   @Post(':courseId/reviews')
   async createReview(@Param('courseId') courseId: string, @Body() createReviewDto: CreateReviewDto) {
     if ((createReviewDto.comments !== undefined) && (createReviewDto.score !== undefined)) {
